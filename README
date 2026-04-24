@@ -1,59 +1,66 @@
-# Motor de Eventos - Arquitectura de Patrones de Diseño (GoF)
+# PRACTICA3 · Gestión de Eventos con Patrones de Diseño (Django)
 
-Sistema de gestión de eventos desarrollado en Django, diseñado para operar íntegramente en memoria RAM (sin persistencia en base de datos) con el objetivo de aislar e implementar patrones de diseño de software. Incluye una API REST y contenedorización con Docker.
+Proyecto académico de Técnicas de Programación orientado a aplicar patrones de diseño en una app web de gestión de eventos.
 
-## Arquitectura y Patrones de Diseño
+## Tecnologías
+- Python 3.14
+- Django 6
+- SQLite
+- Bootstrap 5
 
-El núcleo lógico del sistema evade el ORM de Django para utilizar `dataclasses` puras y diccionarios en memoria, aplicando los siguientes patrones creacionales:
+## Patrones implementados
 
-1. **Singleton (`ConfiguracionGlobal`)**
-   - **Objetivo:** Centralizar el estado global de la aplicación.
-   - **Implementación:** Sobrescritura del método `__new__` para garantizar una única instancia en el Heap de memoria. Gestiona variables transversales como la moneda de visualización y el porcentaje de impuestos. Todas las vistas y lógicas de cálculo leen de esta misma referencia.
+### Creacionales
+- **Builder**: construcción de eventos por tipo (conferencia, boda, concierto, cena).
+- **Prototype**: clonación de eventos existentes.
+- **Singleton**: configuración global (moneda e impuestos).
 
-2. **Builder (`EventoBuilder` y `DirectorEvento`)**
-   - **Objetivo:** Separar la construcción de objetos complejos de su representación.
-   - **Implementación:** Define una interfaz abstracta con constructores concretos (`EventoConferenciaBuilder`, `EventoBodaBuilder`, `EventoConciertoBuilder`, `EventoCenaEmpresaBuilder`). Un Director orquesta los pasos de ensamblaje (asignación de ubicación, inyección de servicios específicos y cálculo de precios) evitando constructores monolíticos con exceso de parámetros.
+### Estructurales
+- **Adapter**: integración de proveedor externo de streaming.
+- **Composite**: composición de paquetes de servicios.
+- **Bridge**: exportación desacoplada (HTML / JSON API).
+- **Decorator**: extras dinámicos sobre el evento (música, catering, VIP, streaming).
 
-3. **Prototype (`Evento.clonar`)**
-   - **Objetivo:** Instanciar nuevos objetos copiando instancias existentes sin acoplarse a sus clases base.
-   - **Implementación:** Utiliza `copy.deepcopy()` para realizar una clonación profunda. Garantiza que las estructuras de datos anidadas (como la lista de `Servicio`s dentro de un `Evento`) se instancien en nuevas direcciones de memoria, evitando que la mutación del clon afecte al prototipo original.
+### Comportamiento
+- **Chain of Responsibility**: pipeline de validaciones antes de guardar.
+- **Observer**: notificaciones automáticas ante cambios en el evento.
+- **Template Method**: flujo estándar de creación con pasos comunes y especialización por tipo.
 
-## Despliegue y Ejecución
+---
 
-El código fuente **no incluye el entorno virtual** por ser dependiente del sistema operativo host. Se proporcionan dos vías de ejecución:
+## Estructura (resumen)
 
-### Opción A: Despliegue con Docker (Recomendado)
-Aísla la ejecución en un contenedor Linux con Python 3.12, resolviendo automáticamente las dependencias.
+- `eventos/`
+  - `views.py`
+  - `urls.py`
+  - `entidades.py`
+  - `templates/eventos/dashboard.html`
+  - `patrones/`
+    - `creacionales/`
+    - `estructurales/`
+    - `comportamiento/`
+- `tests/`
+  - `unit/`
+  - `integration/`
+- `docs/`
+  - `actividad3.md`
+  - `uml/*.puml`
+
+---
+
+## Instalación y ejecución
+
 ```bash
-docker compose up --build
-```
-
-### Opción B: Ejecución Local Nativa
-
-1. Crear entorno virtual
-```bash
+# 1) Crear y activar entorno virtual
 python -m venv .venv
-```
-2. Activar entorno
-En Windows:
-```bash
-.\.venv\Scripts\activate
-```
-En Mac/Linux:
-```bash
-source .venv/bin/activate
-```
+# Windows PowerShell:
+.venv\Scripts\Activate.ps1
 
-3. Instalar dependencias
-```bash
-pip install -r requirements.txt
-```
+# 2) Instalar dependencias
+pip install django djangorestframework pytest
 
-4. Levantar servidor de desarrollo
-```bash
+# 3) Migraciones (importante)
+python manage.py migrate
+
+# 4) Arrancar servidor
 python manage.py runserver
-```
-### Entrar en la URL
-```bash
-http://127.0.0.1:8000/eventos/
-```
