@@ -1,0 +1,37 @@
+@startuml
+title Patrón Template Method - Proceso de creación de eventos
+
+abstract class ProcesoCreacionEvento {
+  +ejecutar(datos): dict
+  #validar_datos(datos, log)
+  #configurar_servicios(datos, log)
+  #calcular_costes(datos, log): float
+  #confirmar_evento(datos, coste, log)
+  {abstract} #configuracion_especifica(datos, log)
+  {abstract} #coste_especifico(datos, log): float
+  {abstract} #tipo_evento(): str
+}
+
+class ProcesoConferencia {
+  #configuracion_especifica(datos, log)
+  #coste_especifico(datos, log): float
+  #tipo_evento(): str
+}
+
+class ProcesoBoda {
+  #configuracion_especifica(datos, log)
+  #coste_especifico(datos, log): float
+  #tipo_evento(): str
+}
+
+class ProcesoConcierto {
+  #configuracion_especifica(datos, log)
+  #coste_especifico(datos, log): float
+  #tipo_evento(): str
+}
+
+ProcesoCreacionEvento <|-- ProcesoConferencia
+ProcesoCreacionEvento <|-- ProcesoBoda
+ProcesoCreacionEvento <|-- ProcesoConcierto
+
+@enduml

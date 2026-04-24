@@ -1,0 +1,35 @@
+@startuml
+title Patrón Decorator - Gestión de Eventos
+
+interface EventoComponent {
+  +get_descripcion(): str
+  +get_coste(): float
+}
+
+class EventoBase {
+  -nombre: str
+  -coste_base: float
+  +get_descripcion(): str
+  +get_coste(): float
+}
+
+abstract class EventoDecorator {
+  -_evento: EventoComponent
+  +get_descripcion(): str
+  +get_coste(): float
+}
+
+class MusicaEnVivoDecorator
+class CateringPremiumDecorator
+class SeguridadVIPDecorator
+class StreamingAvanzadoDecorator
+
+EventoComponent <|.. EventoBase
+EventoComponent <|.. EventoDecorator
+EventoDecorator <|-- MusicaEnVivoDecorator
+EventoDecorator <|-- CateringPremiumDecorator
+EventoDecorator <|-- SeguridadVIPDecorator
+EventoDecorator <|-- StreamingAvanzadoDecorator
+EventoDecorator o--> EventoComponent : envuelve
+
+@enduml

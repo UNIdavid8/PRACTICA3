@@ -1,0 +1,39 @@
+@startuml
+title Patrón Observer - Notificaciones de Evento
+
+interface Observador {
+  +actualizar(evento)
+}
+
+class EventoObservable {
+  -_evento
+  -_observadores: list
+  +agregar_observador(obs)
+  +eliminar_observador(obs)
+  +notificar()
+  +cambiar_fecha(nueva_fecha)
+  +cambiar_estado(nuevo_estado)
+  +cancelar_evento()
+}
+
+class NotificadorEmail {
+  +historial: list
+  +actualizar(evento)
+}
+
+class NotificadorProveedor {
+  +historial: list
+  +actualizar(evento)
+}
+
+class NotificadorAnalytics {
+  +historial: list
+  +actualizar(evento)
+}
+
+Observador <|.. NotificadorEmail
+Observador <|.. NotificadorProveedor
+Observador <|.. NotificadorAnalytics
+EventoObservable o--> Observador : notifica *
+
+@enduml
