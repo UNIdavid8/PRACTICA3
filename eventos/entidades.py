@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 from typing import List, Optional
-from eventos.patrones.prototype import EventoPrototype
+from eventos.patrones.creacionales.prototype import EventoPrototype
 
 @dataclass
 class Usuario:

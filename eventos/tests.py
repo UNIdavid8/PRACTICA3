@@ -1,6 +1,6 @@
 from django.test import SimpleTestCase
-from .patrones.singleton import ConfiguracionGlobal
-from .patrones.builder import DirectorEvento, EventoConferenciaBuilder
+from .patrones.creacionales.singleton import ConfiguracionGlobal
+from .patrones.creacionales.builder import DirectorEvento, EventoConferenciaBuilder
 from .entidades import Ubicacion, Evento, Servicio
 
 class PatronesDesignTests(SimpleTestCase):

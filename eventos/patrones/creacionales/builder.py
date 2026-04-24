@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from eventos.entidades import Evento, Servicio, Ubicacion
-from .practica2 import PaqueteServicios, ProveedorStreamingAdapter # NUEVAS IMPORTACIONES
+from ..practica2 import PaqueteServicios, ProveedorStreamingAdapter # NUEVAS IMPORTACIONES
 
 class EventoBuilder(ABC):
     @abstractmethod

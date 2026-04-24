@@ -4,8 +4,8 @@ import random
 
 from .memoria import db_eventos, guardar_evento, obtener_evento
 from .entidades import Ubicacion
-from .patrones.singleton import ConfiguracionGlobal
-from .patrones.builder import (
+from .patrones.creacionales.singleton import ConfiguracionGlobal
+from .patrones.creacionales.builder import (
     DirectorEvento, EventoConferenciaBuilder, EventoBodaBuilder,
     EventoConciertoBuilder, EventoCenaEmpresaBuilder
 )
