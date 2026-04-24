@@ -1,3 +1,1 @@
-from .creacionales import *
-from .estructurales import *
-from .comportamiento import *
+# Evitar imports globales aquí para no provocar import circular.
