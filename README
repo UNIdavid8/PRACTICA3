@@ -1,0 +1,59 @@
+# Motor de Eventos - Arquitectura de Patrones de Diseño (GoF)
+
+Sistema de gestión de eventos desarrollado en Django, diseñado para operar íntegramente en memoria RAM (sin persistencia en base de datos) con el objetivo de aislar e implementar patrones de diseño de software. Incluye una API REST y contenedorización con Docker.
+
+## Arquitectura y Patrones de Diseño
+
+El núcleo lógico del sistema evade el ORM de Django para utilizar `dataclasses` puras y diccionarios en memoria, aplicando los siguientes patrones creacionales:
+
+1. **Singleton (`ConfiguracionGlobal`)**
+   - **Objetivo:** Centralizar el estado global de la aplicación.
+   - **Implementación:** Sobrescritura del método `__new__` para garantizar una única instancia en el Heap de memoria. Gestiona variables transversales como la moneda de visualización y el porcentaje de impuestos. Todas las vistas y lógicas de cálculo leen de esta misma referencia.
+
+2. **Builder (`EventoBuilder` y `DirectorEvento`)**
+   - **Objetivo:** Separar la construcción de objetos complejos de su representación.
+   - **Implementación:** Define una interfaz abstracta con constructores concretos (`EventoConferenciaBuilder`, `EventoBodaBuilder`, `EventoConciertoBuilder`, `EventoCenaEmpresaBuilder`). Un Director orquesta los pasos de ensamblaje (asignación de ubicación, inyección de servicios específicos y cálculo de precios) evitando constructores monolíticos con exceso de parámetros.
+
+3. **Prototype (`Evento.clonar`)**
+   - **Objetivo:** Instanciar nuevos objetos copiando instancias existentes sin acoplarse a sus clases base.
+   - **Implementación:** Utiliza `copy.deepcopy()` para realizar una clonación profunda. Garantiza que las estructuras de datos anidadas (como la lista de `Servicio`s dentro de un `Evento`) se instancien en nuevas direcciones de memoria, evitando que la mutación del clon afecte al prototipo original.
+
+## Despliegue y Ejecución
+
+El código fuente **no incluye el entorno virtual** por ser dependiente del sistema operativo host. Se proporcionan dos vías de ejecución:
+
+### Opción A: Despliegue con Docker (Recomendado)
+Aísla la ejecución en un contenedor Linux con Python 3.12, resolviendo automáticamente las dependencias.
+```bash
+docker compose up --build
+```
+
+### Opción B: Ejecución Local Nativa
+
+1. Crear entorno virtual
+```bash
+python -m venv .venv
+```
+2. Activar entorno
+En Windows:
+```bash
+.\.venv\Scripts\activate
+```
+En Mac/Linux:
+```bash
+source .venv/bin/activate
+```
+
+3. Instalar dependencias
+```bash
+pip install -r requirements.txt
+```
+
+4. Levantar servidor de desarrollo
+```bash
+python manage.py runserver
+```
+### Entrar en la URL
+```bash
+http://127.0.0.1:8000/eventos/
+```
