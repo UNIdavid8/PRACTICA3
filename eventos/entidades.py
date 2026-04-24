@@ -1,6 +1,8 @@
 from dataclasses import dataclass, field
 from typing import List, Optional
 from eventos.patrones.creacionales.prototype import EventoPrototype
+from eventos.patrones.comportamiento.observer import EventoObservable
+
 
 @dataclass
 class Usuario:
@@ -9,11 +11,13 @@ class Usuario:
     email: str
     is_organizador: bool = True
 
+
 @dataclass
 class Ubicacion:
     nombre: str
     direccion: str
     capacidad: int
+
 
 @dataclass
 class Servicio:
@@ -23,13 +27,17 @@ class Servicio:
 
 
 @dataclass
-class Evento(EventoPrototype): 
+class Evento(EventoPrototype):
     id: int
     nombre: str
     tipo: str  # 'conferencia', 'boda', 'concierto'
     fecha: str
+    estado: str = "activo"  # <- necesario para Observer
     ubicacion: Optional[Ubicacion] = None
     servicios: List[Servicio] = field(default_factory=list)
-    
+
     def agregar_servicio(self, servicio: Servicio):
         self.servicios.append(servicio)
+
+    def crear_observable(self):
+        return EventoObservable(self)
