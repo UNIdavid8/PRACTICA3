@@ -1,29 +1,10 @@
-from abc import ABC, abstractmethod
-
-
-class ImplementacionExportacion(ABC):
-    @abstractmethod
-    def exportar(self, datos) -> dict:
-        pass
-
-
-class ExportadorHTML(ImplementacionExportacion):
-    def exportar(self, datos):
-        return {"formato": "html", "contexto": {"eventos": datos}}
-
-
-class ExportadorAPIJSON(ImplementacionExportacion):
-    def exportar(self, datos):
-        payload = [
-            {"id": e.id, "nombre": e.nombre, "tipo": e.tipo, "fecha": e.fecha}
-            for e in datos
-        ]
-        return {"formato": "json", "data": payload}
-
-
 class AbstraccionRepresentacion:
-    def __init__(self, implementacion: ImplementacionExportacion):
-        self.implementacion = implementacion
+    def __init__(self, implementador): self.implementador = implementador
+    def procesar(self, eventos): return self.implementador.exportar(eventos)
 
-    def procesar(self, eventos):
-        return self.implementacion.exportar(eventos)
+class ExportadorHTML:
+    def exportar(self, eventos): return {"contexto": {"eventos": eventos}}
+
+class ExportadorAPIJSON:
+    def exportar(self, eventos):
+        return [{"id": e.id, "nombre": e.nombre, "fecha": e.fecha, "tipo": e.tipo} for e in eventos]

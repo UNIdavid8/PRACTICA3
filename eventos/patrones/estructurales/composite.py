@@ -1,24 +1,15 @@
-from abc import ABC, abstractmethod
-from eventos.entidades import Servicio
+from ..creacionales.factory import ServicioFactory
 
-
-class ComponenteServicio(ABC):
-    @abstractmethod
-    def obtener_servicio(self) -> Servicio:
-        pass
-
-
-class PaqueteServicios(ComponenteServicio):
-    """Permite tratar grupos de servicios como un único servicio unificado."""
-
-    def __init__(self, nombre: str):
+class PaqueteServicios:
+    def __init__(self, nombre):
         self.nombre = nombre
-        self.hijos = []
+        self.servicios = []
 
-    def agregar(self, servicio: Servicio):
-        self.hijos.append(servicio)
+    def agregar(self, servicio):
+        self.servicios.append(servicio)
 
-    def obtener_servicio(self) -> Servicio:
-        precio_total = sum([s.precio for s in self.hijos]) * 0.85
-        descripcion_combinada = " + ".join([s.nombre for s in self.hijos])
-        return Servicio(f"Pack: {self.nombre}", descripcion_combinada, precio_total)
+    def obtener_coste_total(self):
+        return sum(s.coste for s in self.servicios)
+
+    def obtener_servicio(self):
+        return ServicioFactory.crear(self.nombre, "Paquete Composite", self.obtener_coste_total())

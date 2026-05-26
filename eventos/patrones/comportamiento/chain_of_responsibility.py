@@ -1,33 +1,18 @@
-from abc import ABC, abstractmethod
-
-
-class ManejadorValidacion(ABC):
-    def __init__(self):
-        self.siguiente = None
-
-    def set_siguiente(self, manejador):
-        self.siguiente = manejador
-        return manejador
-
-    @abstractmethod
-    def validar(self, evento) -> tuple[bool, str]:
-        if self.siguiente:
-            return self.siguiente.validar(evento)
-        return True, "Validación exitosa"
-
-
-class ValidarFecha(ManejadorValidacion):
+class ValidadorBase:
+    def __init__(self): self.siguiente = None
+    def set_siguiente(self, validador):
+        self.siguiente = validador
+        return validador
     def validar(self, evento):
-        if not evento.fecha:
-            return False, "[Error] El evento carece de fecha programada."
+        if self.siguiente: return self.siguiente.validar(evento)
+        return True, ""
+
+class ValidarFecha(ValidadorBase):
+    def validar(self, evento):
+        if not evento.fecha: return False, "Fecha inválida"
         return super().validar(evento)
 
-
-class ValidarCapacidad(ManejadorValidacion):
+class ValidarCapacidad(ValidadorBase):
     def validar(self, evento):
-        if evento.ubicacion and evento.ubicacion.capacidad < 50:
-            return (
-                False,
-                "[Error] La capacidad de la ubicación es inferior al mínimo exigido (50).",
-            )
+        if evento.ubicacion and evento.ubicacion.capacidad < 10: return False, "Capacidad insuficiente"
         return super().validar(evento)

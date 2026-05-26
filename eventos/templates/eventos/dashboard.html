@@ -3,39 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestión de Eventos | Bootstrap</title>
+    <title>Gestión de Eventos</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body class="bg-dark text-light pb-5">
-
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark border-bottom border-secondary mb-4 py-3">
         <div class="container">
             <a class="navbar-brand fw-bold" href="#">EVENT<span class="text-primary">ENGINE</span></a>
-
             <div class="d-flex align-items-center bg-secondary bg-opacity-25 border border-secondary rounded p-2">
                 <div class="me-3 lh-sm">
                     <span class="d-block text-uppercase text-muted" style="font-size: 0.7rem; font-weight: bold;">Singleton Config</span>
-                    <span class="fs-5 text-primary text-monospace fw-bold">{{ moneda }}</span>
+                    <span class="fs-5 text-primary fw-bold">{{ moneda }}</span>
                     <span class="text-muted ms-1 small">IVA: {{ impuestos }}%</span>
                 </div>
-                <a href="{% url 'panel_configuracion' %}" class="btn btn-sm btn-outline-primary fw-bold">🔄 Toggle</a>
+                <a href="{% url 'panel_configuracion' %}" class="btn btn-sm btn-outline-primary fw-bold">Toggle</a>
             </div>
         </div>
     </nav>
-
     <div class="container">
         <section class="mb-5">
-            <h5 class="text-muted text-uppercase tracking-wide mb-3">
-                <span class="me-2">🔨</span>Factoría de Eventos (Builder)
-            </h5>
+            <h5 class="text-muted text-uppercase mb-3">Factoría de Eventos</h5>
             <div class="row g-3">
                 <div class="col-md-3">
                     <a href="{% url 'crear_evento' tipo='conferencia' %}?musica=1&catering=1" class="text-decoration-none">
-                        <div class="card bg-dark border-secondary h-100 hover-shadow transition">
+                        <div class="card bg-dark border-secondary h-100">
                             <div class="card-body text-center">
                                 <h1 class="display-6 mb-2">🎤</h1>
                                 <h6 class="card-title text-light fw-bold">Conferencia</h6>
-                                <p class="card-text text-muted small">Incluye Adapter API + Extras Decorator</p>
                             </div>
                         </div>
                     </a>
@@ -46,7 +40,6 @@
                             <div class="card-body text-center">
                                 <h1 class="display-6 mb-2">💍</h1>
                                 <h6 class="card-title text-light fw-bold">Boda Real</h6>
-                                <p class="card-text text-muted small">Banquete y Decoración + VIP</p>
                             </div>
                         </div>
                     </a>
@@ -57,7 +50,6 @@
                             <div class="card-body text-center">
                                 <h1 class="display-6 mb-2">🎸</h1>
                                 <h6 class="card-title text-light fw-bold">Concierto Rock</h6>
-                                <p class="card-text text-muted small">Sonido + Streaming + Seguridad</p>
                             </div>
                         </div>
                     </a>
@@ -68,17 +60,15 @@
                             <div class="card-body text-center">
                                 <h1 class="display-6 mb-2">👔</h1>
                                 <h6 class="card-title text-light fw-bold">Cena Empresa</h6>
-                                <p class="card-text text-muted small">Usa Composite Pack + Catering</p>
                             </div>
                         </div>
                     </a>
                 </div>
             </div>
         </section>
-
         {% if resumen_extras %}
         <div class="alert alert-info border-info mb-4">
-            <h6 class="fw-bold mb-2">Decorator · Resumen de extras</h6>
+            <h6 class="fw-bold mb-2">Resumen de extras</h6>
             <div><strong>Descripción:</strong> {{ resumen_extras.descripcion }}</div>
             <div><strong>Coste total:</strong> {{ resumen_extras.coste_total }} {{ moneda }}</div>
             <div>
@@ -91,11 +81,10 @@
             </div>
         </div>
         {% endif %}
-
         {% if notificaciones %}
         <div class="card bg-dark border-secondary mb-4">
             <div class="card-header border-secondary">
-                <strong>Observer · Notificaciones automáticas</strong>
+                <strong>Notificaciones automáticas</strong>
             </div>
             <div class="card-body">
                 <ul class="mb-0">
@@ -106,11 +95,10 @@
             </div>
         </div>
         {% endif %}
-
         {% if logs_template %}
         <div class="card bg-dark border-secondary mb-4">
             <div class="card-header border-secondary">
-                <strong>Template Method · Historial de ejecución</strong>
+                <strong>Historial de ejecución</strong>
             </div>
             <div class="card-body">
                 <ol class="mb-0">
@@ -121,40 +109,34 @@
             </div>
         </div>
         {% endif %}
-
         <div class="d-flex justify-content-between align-items-end mb-3">
-            <h5 class="text-muted text-uppercase tracking-wide mb-0">
-                <span class="me-2">📦</span>Instancias en Memoria ({{ eventos|length }})
-            </h5>
-            <a href="?export=json" class="btn btn-sm btn-outline-info" target="_blank">Exportar vía API (Bridge)</a>
+            <h5 class="text-muted text-uppercase mb-0">Instancias en Memoria ({{ eventos|length }})</h5>
+            <a href="?export=json" class="btn btn-sm btn-outline-info" target="_blank">Exportar vía API</a>
         </div>
-
         <div class="row g-4">
             {% for evento in eventos %}
             <div class="col-lg-4 col-md-6">
                 <div class="card bg-dark border-secondary h-100 shadow">
                     <div class="card-header bg-transparent border-secondary d-flex justify-content-between align-items-center pt-3 pb-2">
                         <span class="badge bg-secondary text-uppercase">{{ evento.tipo }}</span>
-                        <small class="text-muted text-monospace">ID: {{ evento.id }}</small>
+                        <small class="text-muted">ID: {{ evento.id }}</small>
                     </div>
                     <div class="card-body">
                         <h5 class="card-title fw-bold text-white mb-2">{{ evento.nombre }}</h5>
                         <p class="text-muted small mb-3">
-                            📅 {{ evento.fecha }}<br>
-                            📍 {{ evento.ubicacion.nombre }}
+                            {{ evento.fecha }}<br>
+                            {{ evento.ubicacion.nombre }}
                         </p>
-
                         <p class="small mb-3">
-                            <span class="badge {% if evento.estado == 'cancelado' %}bg-danger{% elif evento.estado == 'confirmado' %}bg-success{% else %}bg-warning text-dark{% endif %}">
-                                Estado: {{ evento.estado|default:"activo" }}
+                            <span class="badge bg-success">
+                                Estado: {{ evento.estado_actual }}
                             </span>
                         </p>
-
                         <div class="mb-4">
-                            {% for servicio in evento.servicios %}
+                            {% for servicio in evento.servicios.all %}
                             <div class="d-flex justify-content-between align-items-center bg-secondary bg-opacity-10 p-2 mb-2 rounded">
                                 <span class="small text-light">{{ servicio.nombre }}</span>
-                                <span class="small text-primary fw-bold">{{ servicio.precio }} {{ moneda }}</span>
+                                <span class="small text-primary fw-bold">{{ servicio.coste }} {{ moneda }}</span>
                             </div>
                             {% empty %}
                             <div class="text-muted small">Sin servicios añadidos.</div>
@@ -163,7 +145,7 @@
                     </div>
                     <div class="card-footer bg-transparent border-secondary border-0 pb-3">
                         <a href="{% url 'clonar_evento' evento_id=evento.id %}" class="btn btn-secondary w-100 btn-sm fw-bold text-uppercase">
-                            🔄 Clonar (Prototype)
+                            Clonar
                         </a>
                     </div>
                 </div>
@@ -171,15 +153,12 @@
             {% empty %}
             <div class="col-12">
                 <div class="border border-secondary border-2 border-dashed rounded-3 p-5 text-center">
-                    <p class="text-muted mb-0 font-monospace">
-                        No hay instancias en el heap de memoria. Genera un evento.
-                    </p>
+                    <p class="text-muted mb-0">No hay instancias en memoria. Genera un evento.</p>
                 </div>
             </div>
             {% endfor %}
         </div>
     </div>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

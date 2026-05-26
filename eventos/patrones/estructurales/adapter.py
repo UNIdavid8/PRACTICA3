@@ -1,21 +1,14 @@
-from eventos.entidades import Servicio
-from .composite import ComponenteServicio
-
+from ..creacionales.factory import ServicioFactory
 
 class APIExternaStreaming:
-    def fetch_stream_data(self, resolution: str) -> dict:
-        return {"tier": resolution, "cost_usd": 600.0 if resolution == "4K" else 200.0}
+    def conectar_servidor_rtmp(self, calidad):
+        return {"status": 200, "bandwidth": calidad, "price": 100.0}
 
-
-class ProveedorStreamingAdapter(ComponenteServicio):
-    def __init__(self, resolucion: str):
+class ProveedorStreamingAdapter:
+    def __init__(self, calidad):
         self.api = APIExternaStreaming()
-        self.resolucion = resolucion
+        self.calidad = calidad
 
-    def obtener_servicio(self) -> Servicio:
-        datos = self.api.fetch_stream_data(self.resolucion)
-        return Servicio(
-            nombre=f"Streaming {datos['tier']}",
-            descripcion="Integración vía API de terceros",
-            precio=datos["cost_usd"],
-        )
+    def obtener_servicio(self):
+        respuesta = self.api.conectar_servidor_rtmp(self.calidad)
+        return ServicioFactory.crear(f"Streaming {self.calidad}", "Transmisión externa", respuesta["price"])
